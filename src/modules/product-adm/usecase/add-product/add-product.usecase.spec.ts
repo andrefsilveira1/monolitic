@@ -20,6 +20,12 @@ describe("Add Product usecase unit test", () => {
             purchasePrice: 100,
             stock: 10,
         }
-        usecase.execute(input);
+        const result = await usecase.execute(input);
+
+        expect(productRepository.add).toHaveBeenCalled();
+        expect(result.id).toBeDefined;
+        expect(result.name).toBe(result.name);
+        expect(result.description).toBe(result.description);
+        expect(result.purchasePrice).toBe(result.purchasePrice);
     });
 });
