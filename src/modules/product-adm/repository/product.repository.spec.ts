@@ -47,7 +47,7 @@ describe("Product repository test", () => {
 
     });
 
-    it("Should find a product", () => {
+    it("Should find a product", async () => {
         const productRepository = new ProductRepository();
 
         ProductModel.create({
@@ -59,5 +59,12 @@ describe("Product repository test", () => {
             createdAt: new Date(),
             updatedAt: new Date(),
         });
+
+        const product = await productRepository.find("1");
+
+        expect(product.id.id).toEqual("1");
+        expect(product.name).toEqual("product");
+        expect(product.description).toEqual("description");
+        expect(product.purchasePrice).toEqual(100);
     });
 });
