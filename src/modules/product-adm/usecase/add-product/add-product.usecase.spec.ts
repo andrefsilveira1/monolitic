@@ -7,19 +7,19 @@ const MockRepository = () => {
     }
 }
 
+const input = {
+    id: "1",
+    name: "Product 1",
+    description: "description",
+    purchasePrice: 100,
+    stock: 10,
+}
 
 describe("Add Product usecase unit test", () => {
     it("Should add a product", async () => {
         const productRepository = MockRepository();
         const usecase = new AddProductUseCase(productRepository);
-        
-        const input = {
-            id: "1",
-            name: "Product 1",
-            description: "description",
-            purchasePrice: 100,
-            stock: 10,
-        }
+
         const result = await usecase.execute(input);
 
         expect(productRepository.add).toHaveBeenCalled();
