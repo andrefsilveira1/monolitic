@@ -46,4 +46,18 @@ describe("Product repository test", () => {
         expect(productProps.stock).toEqual(productDb?.stock);
 
     });
+
+    it("Should find a product", () => {
+        const productRepository = new ProductRepository();
+
+        ProductModel.create({
+            id: "1",
+            name: "product",
+            description: "description",
+            purchasePrice: 100,
+            stock: 2,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        });
+    });
 });

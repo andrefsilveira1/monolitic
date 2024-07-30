@@ -7,19 +7,19 @@ import { Column, Model, PrimaryKey, Table } from "sequelize-typescript";
 export default class ProductModel extends Model {
     @PrimaryKey
     @Column({ allowNull: false})
-    id?: string;
+    id!: string;
 
     @Column({ allowNull: false})
-    name?: string;
+    name!: string;
     
     @Column({ allowNull: false})
-    description?: string;
+    description!: string;
 
     @Column({ allowNull: false})
-    purchasePrice?: number;
+    purchasePrice!: number;
     
     @Column({ allowNull: false})
-    stock?: number;
+    stock!: number;
     
     @Column({ allowNull: false})
     createdAt?: Date;
