@@ -37,5 +37,22 @@ describe("Product adm facade", () => {
 
         const product = await ProductModel.findOne({where: { id: "1" }});
         expect(product).toBeDefined();
-    })
+    });
+
+    it("Should check a product stock", async () => {
+        const productFacade = ProductAdmFactory.create();
+        const input = {
+            id: "1",
+            name: "product",
+            description: "description",
+            purchasePrice: 10,
+            stock: 10,
+        }
+
+        await productFacade.addProduct(input);
+        const result = await productFacade.checkStock({productId: '1'})
+
+        expect(result).toBeDefined();
+        expect(result.productId).toBe(input.id);
+    });
 });
