@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize-typescript";
 import ProductModel from "./product.modal";
+import ProductRepository from "./product.repository";
 
 describe("Product Repository tests", () => {
     let sequelize: Sequelize;
@@ -39,17 +40,15 @@ describe("Product Repository tests", () => {
         const productRepository = new ProductRepository();
         const products = await productRepository.findAll();
 
-        expect(productRepository.findAll).toHaveBeenCalled();
         expect(products.length).toBe(2);
-        expect(products[0].id).toBe("1");
-        expect(products[0].name).toBe("product");
+        expect(products[0].id.id).toBe("1");
+        expect(products[0].name).toBe("product 1");
         expect(products[0].description).toBe("description");
         expect(products[0].salesPrice).toBe(100);
 
-        expect(products[1].id).toBe("2");
+        expect(products[1].id.id).toBe("2");
         expect(products[1].name).toBe("product 2");
         expect(products[1].description).toBe("description 2");
         expect(products[1].salesPrice).toBe(200);
-    })
     })
 })
