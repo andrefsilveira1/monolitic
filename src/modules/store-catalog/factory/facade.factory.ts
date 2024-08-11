@@ -1,3 +1,4 @@
+import StoreCatalogFacade from "../facade/store-catalog.facade";
 import ProductRepository from "../repository/product.repository";
 import FindAllProductsUseCse from "../usecase/find-all-products/find-all-products-usecase";
 import FindProductUseCse from "../usecase/find-product/find-product.usecase";
