@@ -9,6 +9,9 @@ export class ClientModel extends Model {
     id!: string;
 
     @Column({allowNull: false})
+    name!: string;
+
+    @Column({allowNull: false})
     email!: string;
 
     @Column({allowNull: false})
