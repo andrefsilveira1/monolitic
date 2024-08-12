@@ -44,7 +44,7 @@ describe("Client repository test", () => {
         expect(result.updatedAt).toEqual(client.updatedAt);
     });
 
-    it("Should create a cleitn", async () => {
+    it("Should create a client", async () => {
         const client = new Client({
             id: new Id('1'),
             name: "client",
