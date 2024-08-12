@@ -48,4 +48,30 @@ describe("Client Adm Facade test", () => {
         expect(client?.email).toEqual(input.email);
         expect(client?.address).toEqual(input.address);
     });
+
+    it("Should find a client", async () => {
+        const repository = new ClientRepository();
+        const addUsecase = new AddClientUseCase(repository);
+        const findUsecase = new FindClientUseCase(repository);
+        const facade = new ClientAdmFacade({
+            addUsecase: addUsecase,
+            findUsecase: findUsecase,
+        });
+
+        const input = {
+            id: '1',
+            name: "client",
+            email: "client@gmail.com",
+            address: "address",
+        }
+        await facade.add(input);
+
+
+        const client = await facade.find({id: '1'});
+
+        expect(client).toBeDefined();
+        expect(client.id).toBe(input.id);
+        expect(client.name).toBe(input.name);
+        expect(client.address).toBe(input.address);
+    })
 })
