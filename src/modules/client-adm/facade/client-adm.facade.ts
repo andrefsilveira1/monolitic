@@ -19,7 +19,16 @@ export default class ClientAdmFacade implements ClientAdmFacadeInterface {
         await this._addUsecase.execute(input);
     }
 
-    find(input: FindClientFacadeInputDto): Promise<FindClientFacadeOutputDto> {
-        throw new Error()
+    async find(input: FindClientFacadeInputDto): Promise<FindClientFacadeOutputDto> {
+        const client = await this._findUsecase.execute(input);
+
+        return {
+            id: client.id,
+            name: client.name,
+            email: client.email,
+            address: client.address,
+            createdAt: client.createdAt,
+            updatedAt: client.updatedAt
+        }
     }
 }
