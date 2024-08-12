@@ -12,15 +12,14 @@ describe("Add Client usecase unit test", () => {
         const repository = MockRepository();
         const usecase = new AddClientUseCase(repository);
         const input = {
-            id: "1",
             name: "client",
             email: "client@gmail.com",
             address: "address"
         };
-        
+
         const result = await usecase.execute(input);
         expect(repository.add).toHaveBeenCalled();
-        expect(result.id).toEqual(input.id);
+        expect(result.id).toBeDefined();
         expect(result.name).toEqual(input.name);
         expect(result.email).toEqual(input.email);
         expect(result.address).toEqual(input.address);
