@@ -3,12 +3,12 @@ import BaseEntity from "../../@shared/domain/entity/base.entity";
 import Id from "../../@shared/value-object/id.value-object";
 
 type TransactionProps = {
-    id: Id;
+    id?: Id;
     amount: number;
     orderId: string;
     status?: string;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
 };
 
 
