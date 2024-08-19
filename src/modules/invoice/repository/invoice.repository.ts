@@ -8,7 +8,27 @@ import { InvoiceItemsModel } from "./invoiceItems.model";
 
 export default class InvoiceRepostory implements InvoiceGateway {
     async generate(invoice: Invoice): Promise<void> {
-        throw new Error('Not implemented');
+        await InvoiceModel.create(
+            {
+                id: invoice.id.id,
+                name: invoice.name,
+                document: invoice.document,
+                street: invoice.address.street,
+                number: invoice.address.number,
+                complement: invoice.address.complement,
+                city: invoice.address.city,
+                state: invoice.address.state,
+                zipCode: invoice.address.zipCode,
+                items: invoice.items.map(item => ({
+                    id: item.id.id,
+                    name: item.name,
+                    price: item.price,
+                }))
+            },
+            {
+                include: [InvoiceItemsModel]
+            }
+        );
     }
 
     async find(id: string): Promise<Invoice> {

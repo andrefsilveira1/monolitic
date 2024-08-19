@@ -72,5 +72,21 @@ describe("Client repository test", () => {
         const result = await repository.find(invoice.id.id);
         expect(result.id.id).toEqual(invoice.id.id);
         expect(result.name).toEqual(invoice.name);
-    })
+    });
+
+    it("Should create a invoice", async () => {
+        const repository = new InvoiceRepostory();
+        await repository.generate(invoice);
+
+        const invoiceDb = await InvoiceModel.findOne({where: {id: '1'}, include: InvoiceItemsModel})
+        expect(invoiceDb?.id).toEqual(invoice.id.id);
+        expect(invoiceDb?.name).toEqual(invoice.name);
+        expect(invoiceDb?.document).toEqual(invoice.document);
+        expect(invoiceDb?.street).toEqual(invoice.address.street);
+        expect(invoiceDb?.complement).toEqual(invoice.address.complement);
+        expect(invoiceDb?.state).toEqual(invoice.address.state);
+        expect(invoiceDb?.number).toEqual(invoice.address.number);
+        expect(invoiceDb?.city).toEqual(invoice.address.city);
+        expect(invoiceDb?.zipCode).toEqual(invoice.address.zipCode);
+    });
 })
