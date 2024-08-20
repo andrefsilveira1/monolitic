@@ -1,5 +1,9 @@
+import Id from "../../../@shared/value-object/id.value-object";
+import Product from "../../domain/product.entity";
 import { PlaceOrderInputDto } from "./place-order.dto";
 import PlaceOrderUseCase from "./place-order.usecase";
+
+const mockDate = new Date(2000, 1, 1);
 
 describe("Place Order Use Case unit test", () => {
 
@@ -31,27 +35,77 @@ describe("Place Order Use Case unit test", () => {
 
             let input: PlaceOrderInputDto = {
                 clientId: '0',
-                products: [{productId: '1'}]
+                products: [{ productId: '1' }]
             };
             await expect(placeOrderUseCase['validateProducts'](input)).rejects.toThrow(new Error("Product 1 is not available on stock"))
             input = {
                 clientId: '0',
-                products: [{productId: "0"}, { productId: "1"}]
+                products: [{ productId: "0" }, { productId: "1" }]
             };
-            
+
             await expect(placeOrderUseCase['validateProducts'](input)).rejects.toThrow(new Error("Product 1 is not available on stock"));
             expect(mockProductFacade.checkStock).toHaveBeenCalledTimes(3);
 
             await expect(placeOrderUseCase['validateProducts'](input)).rejects.toThrow(new Error("Product 1 is not available on stock"))
             input = {
                 clientId: '0',
-                products: [{productId: "0"}, { productId: "1"},{ productId: '2'}]
+                products: [{ productId: "0" }, { productId: "1" }, { productId: '2' }]
             };
-            
+
             await expect(placeOrderUseCase['validateProducts'](input)).rejects.toThrow(new Error("Product 1 is not available on stock"));
             expect(mockProductFacade.checkStock).toHaveBeenCalledTimes(7);
         });
     });
+
+    describe("Get products method", () => {
+        beforeAll(() => {
+            jest.useFakeTimers("modern");
+            jest.setSystemTime(mockDate);
+        });
+
+        afterAll(() => {
+            jest.useRealTimers();
+        });
+
+        //@ts-expect-error - no param in constructor
+        const placeOrderUseCase = new PlaceOrderUseCase();
+
+        it("Should throw an error when product not found", async () => {
+            const mockCatalogFacade = {
+                find: jest.fn().mockResolvedValue(null)
+            }
+
+            //@ts-expect-error - force set catalogFacade
+            placeOrderUseCase["_catalogFacade"] = mockCatalogFacade;
+            await expect(placeOrderUseCase["getProduct"]("0")).rejects.toThrow(new Error("Product not found"))
+        });
+
+        it("Should return a product", async () => {
+            const mockCatalogFacade = {
+                find: jest.fn().mockResolvedValue({
+                    id: "0",
+                    name: "product 0",
+                    description: "Product 0 description",
+                    salesPrice: 0
+                })
+            };
+
+            //@ts-expect-error - force set catalogFacade
+            placeOrderUseCase["_catalogFacade"] = mockCatalogFacade;
+
+            await expect(placeOrderUseCase['getProduct']("0")).resolves.toEqual(
+                new Product({
+                    id: new Id("0"),
+                    name: "product 0",
+                    description: "Product 0 description",
+                    salesPrice: 0
+                })
+            )
+            expect(mockCatalogFacade.find).toHaveBeenCalled();
+
+        })
+
+    })
 
 
     describe("Execute method", () => {
