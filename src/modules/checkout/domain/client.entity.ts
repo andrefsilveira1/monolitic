@@ -29,4 +29,8 @@ export default class Client extends BaseEntity implements AggregateRoot {
     get email(): string {
         return this._email;
     }
+
+    get address(): string {
+        return this._address;
+    }
 }
