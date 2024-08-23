@@ -3,6 +3,7 @@ import { ClientModel } from "./client.model";
 import ClientRepository from "./client.repository";
 import Client from "../domain/client.entity";
 import Id from "../../@shared/value-object/id.value-object";
+import Address from "../../@shared/value-object/address.value_object";
 
 describe("Client repository test", () => {
     let sequelize: Sequelize;
@@ -11,7 +12,7 @@ describe("Client repository test", () => {
             dialect: "sqlite",
             storage: ":memory:",
             logging: false,
-            sync: { force: true}
+            sync: { force: true }
         });
 
         await sequelize.addModels([ClientModel]);
@@ -28,7 +29,13 @@ describe("Client repository test", () => {
             id: '1',
             name: "client",
             email: "client@gmail.com",
-            address: "address",
+            street: "street",
+            number: "456",
+            document: "000",
+            complement: "Apt 789",
+            city: "Springfield",
+            state: "IL",
+            zipCode: "62704",
             createdAt: new Date(),
             updatedAt: new Date(),
         });
@@ -39,28 +46,43 @@ describe("Client repository test", () => {
         expect(result.id.id).toEqual(client.id);
         expect(result.name).toEqual(client.name);
         expect(result.email).toEqual(client.email);
-        expect(result.address).toEqual(client.address);
+        expect(result.address.street).toEqual(client.street);
+        expect(result.address.number).toEqual(client.number);
+        expect(result.address.complement).toEqual(client.complement);
+        expect(result.address.city).toEqual(client.city);
+        expect(result.address.state).toEqual(client.state);
+        expect(result.address.zipCode).toEqual(client.zipCode);
         expect(result.createdAt).toEqual(client.createdAt);
         expect(result.updatedAt).toEqual(client.updatedAt);
     });
 
     it("Should create a client", async () => {
+        const address = new Address({
+            street: "street",
+            number: "456",
+            complement: "Apt 789",
+            city: "Springfield",
+            state: "IL",
+            zipCode: "62704"
+        });
+
         const client = new Client({
             id: new Id('1'),
             name: "client",
             email: "client@gmail.com",
-            address: "address",
+            address: address,
+            document: "000",
         });
 
         const repository = new ClientRepository();
         await repository.add(client);
 
-        const clientdb = await ClientModel.findOne({where: {id: "1"}});
+        const clientdb = await ClientModel.findOne({ where: { id: "1" } });
 
         expect(clientdb?.id).toEqual(client.id.id);
         expect(clientdb?.name).toEqual(client.name);
         expect(clientdb?.email).toEqual(client.email);
-        expect(clientdb?.address).toEqual(client.address);
+        expect(clientdb?.street).toEqual(client.address.street);
         expect(clientdb?.createdAt).toEqual(client.createdAt);
         expect(clientdb?.updatedAt).toEqual(client.updatedAt);
     })

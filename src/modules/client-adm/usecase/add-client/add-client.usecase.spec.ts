@@ -1,3 +1,4 @@
+import Address from "../../../@shared/value-object/address.value_object";
 import AddClientUseCase from "./add-client.usecase";
 
 const MockRepository = () => {
@@ -7,6 +8,15 @@ const MockRepository = () => {
     }
 }
 
+const address = new Address({
+    street: "street",
+    number: "456",
+    complement: "Apt 789",
+    city: "Springfield",
+    state: "IL",
+    zipCode: "62704"
+});
+
 describe("Add Client usecase unit test", () => {
     it("Should add new client", async () => {
         const repository = MockRepository();
@@ -14,7 +24,8 @@ describe("Add Client usecase unit test", () => {
         const input = {
             name: "client",
             email: "client@gmail.com",
-            address: "address"
+            address: address,
+            document: "000"
         };
 
         const result = await usecase.execute(input);

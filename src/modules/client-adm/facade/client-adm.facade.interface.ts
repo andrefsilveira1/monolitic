@@ -1,8 +1,10 @@
+import Address from "../../@shared/value-object/address.value_object";
+
 export interface AddClientFacadeInputDto {
     id?: string;
     name: string;
     email: string;
-    address: string;
+    address: Address;
 }
 
 export interface FindClientFacadeInputDto {
@@ -13,7 +15,8 @@ export interface FindClientFacadeOutputDto {
     id: string;
     name: string;
     email: string;
-    address: string;
+    address: Address;
+    document: string;
     createdAt: Date;
     updatedAt: Date;
 }

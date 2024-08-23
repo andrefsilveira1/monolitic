@@ -1,13 +1,27 @@
+import Address from "../../../@shared/value-object/address.value_object";
 import Id from "../../../@shared/value-object/id.value-object";
 import Client from "../../domain/client.entity";
 import FindClientUseCase from "./find-client.usecase";
+
+
+const address = new Address({
+    street: "street",
+    number: "456",
+    complement: "Apt 789",
+    city: "Springfield",
+    state: "IL",
+    zipCode: "62704"
+});
 
 const client = new Client({
     id: new Id('1'),
     name: "Client 1",
     email: "client@gmail.com",
-    address: "address"
-})
+    address: address,
+    document: "000",
+});
+
+
 const MockRepository = () => {
     return {
         add: jest.fn(),
