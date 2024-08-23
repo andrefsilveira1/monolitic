@@ -1,4 +1,5 @@
 import UseCaseInterface from "../../../@shared/usecase/use-case.interface";
+import Address from "../../../@shared/value-object/address.value_object";
 import Id from "../../../@shared/value-object/id.value-object";
 import ClientAdmFacadeInterface from "../../../client-adm/facade/client-adm.facade.interface";
 import InvoiceFacadeInterface from "../../../invoice/facade/invoice.facade.interface";
@@ -46,11 +47,21 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
             input.products.map((p) => this.getProduct(p.productId))
         );
 
+        const address = new Address({
+            street: client.address.street,
+            number: client.address.number,
+            complement: client.address.complement,
+            city: client.address.city,
+            state: client.address.state,
+            zipCode: client.address.zipCode,
+        });
+
         const myClient = new Client({
             id: new Id(client.id),
             name: client.name,
             email: client.email,
-            address: client.address
+            address: address,
+            document: client.document
         });
 
         const order = new Order({
@@ -66,13 +77,13 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
         const invoice = payment.status === "approved" ?
             await this._invoiceFacade.generate({
                 name: client.name,
-                document: client.email,
-                street: client.address,
-                number: client.address,
-                complement: client.address,
-                city: client.address,
-                state: client.address,
-                zipCode: client.address,
+                document: client.document,
+                street: client.address.street,
+                number: client.address.number,
+                complement: client.address.complement,
+                city: client.address.city,
+                state: client.address.state,
+                zipCode: client.address.zipCode,
                 items: products.map((p) => {
                     return {
                         id: p.id.id,

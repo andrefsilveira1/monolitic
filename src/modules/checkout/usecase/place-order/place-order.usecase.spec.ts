@@ -169,12 +169,14 @@ describe("Place Order Use Case unit test", () => {
                 name: "Client 0",
                 document: "0000",
                 email: "client@user.com",
-                street: "some address",
-                number: "1",
-                complement: "",
-                city: "natal",
-                state: "stateless",
-                zipCode: "111",
+                address: {
+                    street: "some address",
+                    number: "1",
+                    complement: "",
+                    city: "natal",
+                    state: "stateless",
+                    zipCode: "111",
+                }
             }
 
             const mockClientFacade = {
@@ -312,12 +314,12 @@ describe("Place Order Use Case unit test", () => {
                 expect(mockInvoiceFacade.generate).toHaveBeenCalledWith({
                     name: clientProps.name,
                     document: clientProps.document,
-                    street: clientProps.street,
-                    number: clientProps.number,
-                    complement: clientProps.complement,
-                    city: clientProps.city,
-                    state: clientProps.state,
-                    zipCode: clientProps.zipCode,
+                    street: clientProps.address.street,
+                    number: clientProps.address.number,
+                    complement: clientProps.address.complement,
+                    city: clientProps.address.city,
+                    state: clientProps.address.state,
+                    zipCode: clientProps.address.zipCode,
                     items: [
                         {
                             id: products["1"].id.id,
