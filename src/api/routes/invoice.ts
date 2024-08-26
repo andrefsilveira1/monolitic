@@ -3,9 +3,9 @@ import ProductAdmFactory from "../../modules/product-adm/factory/facade.factory"
 import ClientAdmFacadeFactory from "../../modules/client-adm/factory/client-adm.facade.factory";
 import InvoiceFacadeFactory from "../../modules/invoice/factory/invoice.facade.factory";
 
-export const clientsRoute = express.Router();
+export const invoiceRoute = express.Router();
 
-clientsRoute.get("/:id", async (req: Request, res: Response) => {
+invoiceRoute.get("/:id", async (req: Request, res: Response) => {
     const facade = InvoiceFacadeFactory.create();
 
     try {
