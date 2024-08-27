@@ -1,3 +1,4 @@
+import Product from "../domain/product.entity";
 import { CreateProductInputDto } from "../usecase/create-product/create-product.dto";
 import CreateProductUseCase from "../usecase/create-product/create-product.usecase";
 import FindAllProductsUseCse from "../usecase/find-all-products/find-all-products-usecase";
@@ -29,7 +30,8 @@ export default class StoreCatalogFacade implements StoreCatalogFacadeInterface {
         return await this._findAllUseCase.execute();
     }
 
-    async create(input: CreateProductInputDto): Promise<void> {
-        return await this._createUseCase.execute(input);
+    async create(input: CreateProductInputDto): Promise<Product> {
+        const product = await this._createUseCase.execute(input);
+        return product;
     }
 }

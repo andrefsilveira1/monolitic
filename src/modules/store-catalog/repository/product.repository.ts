@@ -39,14 +39,21 @@ export default class ProductRepository implements ProductGateway {
         });
     }
 
-    async create(input: CreateProductInputDto): Promise<void> {
-        await ProductCatalogModel.create({
+    async create(input: CreateProductInputDto): Promise<Product> {
+        const response = await ProductCatalogModel.create({
             id: input.id,
             name: input.name,
             description: input.description,
             salesPrice: input.salesPrice
         });
 
-        return
+        const productCreated = await this.find(input.id);
+
+        return new Product({
+            id: new Id(input.id),
+            name: input.name,
+            description: input.description,
+            salesPrice: input.salesPrice
+        })
     }
 }

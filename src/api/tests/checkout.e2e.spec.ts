@@ -1,5 +1,7 @@
 import request from "supertest";
 import { app, sequelize } from "../express";
+import ProductModel from "../../modules/product-adm/repository/product.model";
+import ProductCatalogModel from "../../modules/store-catalog/repository/product.modal";
 
 describe("E2E test Checkout", () => {
     beforeEach(async () => {

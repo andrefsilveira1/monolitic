@@ -4,5 +4,5 @@ import { CreateProductInputDto } from "../usecase/create-product/create-product.
 export default interface ProductGateway {
     findAll(): Promise<Product[]>;
     find(id: string): Promise<Product>;
-    create(input: CreateProductInputDto): Promise<void>;
+    create(input: CreateProductInputDto): Promise<Product>;
 }

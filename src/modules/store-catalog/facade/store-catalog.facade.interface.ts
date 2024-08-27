@@ -1,3 +1,4 @@
+import Product from "../domain/product.entity";
 import { CreateProductInputDto } from "../usecase/create-product/create-product.dto";
 
 export interface FindStoreCatalogFacadeInputDto {
@@ -24,5 +25,5 @@ export interface FindAllStoreCatalogFacadeOutputDto {
 export default interface StoreCatalogFacadeInterface {
     find(id: FindStoreCatalogFacadeInputDto): Promise<FindStoreCatalogFacadeOutputDto>
     findAll(): Promise<FindAllStoreCatalogFacadeOutputDto>
-    create(input: CreateProductInputDto): Promise<void>;
+    create(input: CreateProductInputDto): Promise<Product>;
 }
