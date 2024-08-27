@@ -9,6 +9,7 @@ import { clientsRoute } from "./routes/client";
 import { productsRoute } from "./routes/product";
 import { checkoutRoute } from "./routes/checkout";
 import { catalogRoute } from "./routes/catalog";
+import ProductCatalogModel from "../modules/store-catalog/repository/product.modal";
 
 
 export const app: Express = express();
@@ -30,6 +31,7 @@ async function setup() {
         InvoiceModel,
         InvoiceItemsModel,
         ProductModel,
+        ProductCatalogModel,
         TransactionModel
     ]);
     await sequelize.sync();

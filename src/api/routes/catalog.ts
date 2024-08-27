@@ -14,9 +14,9 @@ catalogRoute.post("/", async (req: Request, res: Response) => {
             salesPrice: req.body.salesPrice,
         }
 
-        await facade.create(productDto);
+        const product = await facade.create(productDto);
 
-        res.send("created");
+        res.send(product);
     } catch (err) {
         res.status(500).send(err);
     }
