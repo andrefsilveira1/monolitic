@@ -1,6 +1,7 @@
 import { Sequelize } from "sequelize-typescript";
 import ProductModel from "./product.modal";
 import ProductRepository from "./product.repository";
+import ProductCatalogModel from "./product.modal";
 
 describe("Product Repository tests", () => {
     let sequelize: Sequelize;
@@ -12,7 +13,7 @@ describe("Product Repository tests", () => {
             sync: { force: true}
         });
 
-        await sequelize.addModels([ProductModel]);
+        await sequelize.addModels([ProductCatalogModel]);
         await sequelize.sync();
     });
 
@@ -71,6 +72,26 @@ describe("Product Repository tests", () => {
 
         const productRepository = new ProductRepository();
         const product= await productRepository.find('1');
+
+        expect(product.id.id).toBe("1");
+        expect(product.name).toBe("product 1");
+        expect(product.description).toBe("description");
+        expect(product.salesPrice).toBe(100);
+    });
+
+    it("Should create a product catalog ", async () => {
+        const productProps = {
+            id: "1",
+            name: "product 1",
+            description: "description",
+            salesPrice: 100,
+        };
+
+
+        const productRepository = new ProductRepository();
+        await productRepository.create(productProps);
+        const product = await productRepository.find("1");
+
 
         expect(product.id.id).toBe("1");
         expect(product.name).toBe("product 1");

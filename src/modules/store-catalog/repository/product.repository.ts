@@ -1,6 +1,8 @@
 import Id from "../../@shared/value-object/id.value-object";
 import Product from "../domain/product.entity";
 import ProductGateway from "../gateway/product.gateway";
+import { CreateProductInputDto } from "../usecase/create-product/create-product.dto";
+import ProductCatalogModel from "./product.modal";
 import ProductModel from "./product.modal";
 
 export default class ProductRepository implements ProductGateway {
@@ -35,5 +37,16 @@ export default class ProductRepository implements ProductGateway {
             description: product?.description,
             salesPrice: product?.salesPrice
         });
+    }
+
+    async create(input: CreateProductInputDto): Promise<void> {
+        await ProductCatalogModel.create({
+            id: input.id,
+            name: input.name,
+            description: input.description,
+            salesPrice: input.salesPrice
+        });
+
+        return
     }
 }
