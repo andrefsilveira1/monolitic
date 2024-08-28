@@ -15,6 +15,7 @@ describe("E2E test Checkout", () => {
     });
 
     it("Should create a Checkout", async () => {
+        //First create a client
         const client = await request(app)
             .post("/client")
             .send({
@@ -32,7 +33,7 @@ describe("E2E test Checkout", () => {
                 }
             });
         expect(client.status).toBe(200);
-
+        // Then, register a product
         const product = await request(app)
             .post("/product")
             .send({
@@ -43,7 +44,7 @@ describe("E2E test Checkout", () => {
                 stock: 10,
             });
         expect(product.status).toBe(200);
-
+        // Creating second procut 
         const product2 = await request(app)
             .post("/product")
             .send({
@@ -55,6 +56,7 @@ describe("E2E test Checkout", () => {
             });
         expect(product2.status).toBe(200);
 
+        //Register products on catalog
         const catalog = await request(app)
             .post("/catalog")
             .send({
@@ -75,7 +77,8 @@ describe("E2E test Checkout", () => {
                 salesPrice: 200,
             });
         expect(catalog2.status).toBe(200);
-
+        
+        //Finally, create a checkout
         const response = await request(app)
             .post("/checkout")
             .send({
@@ -89,6 +92,6 @@ describe("E2E test Checkout", () => {
         expect(response.status).toBe(200);
         expect(response.body.status).toBe("approved");
         expect(response.body.total).toBe(400);
-        await wait(1000);
+        await wait(1000); // I don't know why, but without this, sometimes the connection with sequelize is being closed before the test end.
     });
 });
