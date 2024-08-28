@@ -3,8 +3,10 @@ import { app, sequelize } from "../express";
 import ProductModel from "../../modules/product-adm/repository/product.model";
 import ProductCatalogModel from "../../modules/store-catalog/repository/product.modal";
 
+const wait = (ms:number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 describe("E2E test Checkout", () => {
-    beforeEach(async () => {
+    beforeAll(async () => {
         await sequelize.sync({ force: true });
     });
 
@@ -13,7 +15,6 @@ describe("E2E test Checkout", () => {
     });
 
     it("Should create a Checkout", async () => {
-
         const client = await request(app)
             .post("/client")
             .send({
@@ -62,9 +63,20 @@ describe("E2E test Checkout", () => {
                 description: "some description1",
                 salesPrice: 200,
             });
+
         expect(catalog.status).toBe(200);
 
-        const respose = await request(app)
+        const catalog2 = await request(app)
+            .post("/catalog")
+            .send({
+                id: "p2",
+                name: "product 11",
+                description: "some description1",
+                salesPrice: 200,
+            });
+        expect(catalog2.status).toBe(200);
+
+        const response = await request(app)
             .post("/checkout")
             .send({
                 clientId: "2",
@@ -72,20 +84,11 @@ describe("E2E test Checkout", () => {
                     { productId: "p1" },
                     { productId: "p2" },
                 ]
-
             });
-
-        expect(respose.status).toBe(200);
+        
+        expect(response.status).toBe(200);
+        expect(response.body.status).toBe("approved");
+        expect(response.body.total).toBe(400);
+        await wait(1000);
     });
-
-    // it("Should not create a Checkout", async () => {
-    //     const response = await request(app)
-    //         .post("/client")
-    //         .send({
-    //             clientId: "John"
-    //         });
-
-    //     expect(response.status).toBe(500);
-    // });
-
 });
