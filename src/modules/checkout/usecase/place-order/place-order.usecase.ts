@@ -41,15 +41,11 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
         if (!client) {
             throw new Error("Client not found");
         }
-        console.log("HIT CLIENT ====>", client)
 
         await this.validateProducts(input);
-        console.log("HIT PROJECT ====>", input)
         const products = await Promise.all(
             input.products.map((p) => this.getProduct(p.productId))
         );
-
-        console.log("HIT PROJECT ====>", products)
 
         const address = new Address({
             street: client.address.street,
@@ -60,9 +56,6 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
             zipCode: client.address.zipCode,
         });
 
-        console.log("HIT address ===>", address)
-
-
         const myClient = new Client({
             id: new Id(client.id),
             name: client.name,
@@ -71,14 +64,10 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
             document: client.document
         });
 
-        console.log("HIT myClient ===>", myClient)
-
         const order = new Order({
             client: myClient,
             products
         });
-
-        console.log("HIT ORDER ===>", order)
 
         const payment = await this._paymentFacade.process({
             orderId: order.id.id,
@@ -137,9 +126,7 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
     }
 
     private async getProduct(productId: string): Promise<Product> {
-        console.log("LOG ON productId productId ===>", productId);
         const product = await this._catalogFacade.find({ id: productId });
-        console.log("LOG ON GET PRODUCTS ===>", product);
 
         if (!product) {
             throw new Error("Product not found");
