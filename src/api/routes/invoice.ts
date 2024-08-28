@@ -1,14 +1,12 @@
-import express, {Request, Response} from "express";
-import ProductAdmFactory from "../../modules/product-adm/factory/facade.factory";
-import ClientAdmFacadeFactory from "../../modules/client-adm/factory/client-adm.facade.factory";
+import express, { Request, Response } from "express";
 import InvoiceFacadeFactory from "../../modules/invoice/factory/invoice.facade.factory";
 
 export const invoiceRoute = express.Router();
 
-invoiceRoute.get("/:id", async (req: Request, res: Response) => {
-    const facade = InvoiceFacadeFactory.create();
-
+invoiceRoute.post("/", async (req: Request, res: Response) => {
     try {
+        const facade = InvoiceFacadeFactory.create();
+
         const invoiceDto = {
             id: req.body.id,
             name: req.body.name,
@@ -21,8 +19,19 @@ invoiceRoute.get("/:id", async (req: Request, res: Response) => {
             zipCode: req.body.zipCode,
             items: req.body.items,
         }
+        const invoice = await facade.generate(invoiceDto);
+        res.send(invoice);
+    } catch (err) {
+        res.status(500).send(err);
+    }
 
-        const invoice = await facade.find(invoiceDto)
+})
+
+invoiceRoute.get("/:id", async (req: Request, res: Response) => {
+    const facade = InvoiceFacadeFactory.create();
+    const invoiceId = req.params.id
+    try {
+        const invoice = await facade.find({ id: invoiceId })
 
         res.send(invoice);
     } catch (err) {

@@ -10,6 +10,7 @@ import { productsRoute } from "./routes/product";
 import { checkoutRoute } from "./routes/checkout";
 import { catalogRoute } from "./routes/catalog";
 import ProductCatalogModel from "../modules/store-catalog/repository/product.modal";
+import { invoiceRoute } from "./routes/invoice";
 
 
 export const app: Express = express();
@@ -18,7 +19,8 @@ app.use(express.json());
 app.use("/client", clientsRoute);
 app.use("/product", productsRoute);
 app.use("/checkout", checkoutRoute);
-app.use("/catalog", catalogRoute)
+app.use("/catalog", catalogRoute);
+app.use("/invoice", invoiceRoute);
 
 async function setup() {
     sequelize = new Sequelize({
